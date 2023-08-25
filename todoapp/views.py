@@ -52,6 +52,7 @@ def dashboard(request):
             todo_item = form.save(commit=False)
             todo_item.task_user = request.user
             todo_item.save()
+            messages.success(request,'Task successfully added')
             return redirect('todoapp:dashboard')
 
     #querying pending task    
@@ -76,6 +77,7 @@ def update(request,id):
         form = TaskForm(request.POST,instance=task)
         if form.is_valid():
             form.save()
+            messages.warning(request,'Task has been updated')
             return redirect('todoapp:dashboard')
     else:
         form = TaskForm(instance=task)
@@ -99,6 +101,7 @@ def undone(request,id):
 def delete_task(request,id):
     task = Task.objects.get(id=id)
     task.delete()
+    messages.error(request,'Task has been deleted')
     return redirect('todoapp:dashboard')
 
 def doLogout(request):

@@ -3,6 +3,40 @@
 
 <div class="container">
 
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'success' %}
+<div class="alert alert-success alert-dismissible fade show" role="alert">
+   {{message}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+
+{% elif message.tags == 'warning' %}
+
+<div class="alert alert-warning alert-dismissible fade show" role="alert">
+    {{message}}
+   <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+
+{% else %}
+
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{message}}
+   <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+     <span aria-hidden="true">&times;</span>
+   </button>
+ </div>
+
+ 
+{% endif %}
+{% endfor %}
+{% endif %}
+
+
     <div class="d-flex justify-content-between align-items-center">
         <h1 class="mt-4">User: {{ user.username }}, {{task_pending}} to be Completed</h1>
         <a href="{% url 'todoapp:doLogout' %}" class="btn btn-danger">Logout</a>
@@ -17,14 +51,17 @@
     <table class="table mt-4">
         <thead>
             <tr>
+                <th>Task No</th>
                 <th>Task Name</th>
                 <th>Status</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
+            
             {% for i in tasks %}
             <tr>
+                <td>{{forloop.counter}}</td>
                 <td>{{ i.task_name }}</td>
                 <td>
                     {% if i.task_status %}
@@ -35,7 +72,7 @@
                 </td>
                 <td>
                     <a href="{% url 'todoapp:update' i.id %}" class="btn btn-info btn-sm">Update</a>
-                    <a href="{% url 'todoapp:delete_task' i.id %}" class="btn btn-danger btn-sm">Delete</a>
+                    <a href="{% url 'todoapp:delete_task' i.id %}" class="btn btn-danger btn-sm"  " onclick="return confirm('Are you sure to delete?');">Delete</a>
                     {% if i.task_status %}
                     <a href="{% url 'todoapp:undone' i.id %}" class="btn btn-secondary btn-sm">Mark as Pending</a>
                     {% else %}
