@@ -1,0 +1,37 @@
+{% extends 'todoapp/base.html' %}
+
+{% block content %}
+
+<h1>Welcome to Login Page </h1>
+
+
+<div class="container">
+ 
+{% if messages %}
+{% for message in messages %}
+{% if message.tags == 'error' %}
+<div class="alert alert-danger alert-dismissible fade show" role="alert">
+   {{message}}
+  <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+{% endif %}
+{% endfor %}
+{% endif %}
+    <form action="{% url 'todoapp:doLogin' %}" method="POST">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="exampleInputUsername" class="form-label">Username</label>
+          <input type="text" class="form-control" id="exampleInputUsername" name="username" required>
+          
+        </div>
+        <div class="mb-3">
+          <label for="exampleInputPassword1" class="form-label">Password</label>
+          <input type="password" class="form-control" id="exampleInputPassword1" name="password" required>
+        </div>
+        <div class="mb-3">Not have an account? <a href="{% url 'todoapp:register' %}">Register</a></div>
+        <button type="submit" class="btn btn-primary w-100">Login</button>
+      </form>
+</div>
+{% endblock content %}
