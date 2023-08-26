@@ -46,7 +46,6 @@ def dashboard(request):
     
     #query task item based on login user
     task_items = Task.objects.filter(task_user=request.user.id)
-    id = request.user.id
     form = TaskForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
@@ -63,7 +62,7 @@ def dashboard(request):
     search_query = request.GET.get('search_query')
 
     if search_query:
-        task_items = task_items.filter(task_name__icontains=search_query)  # Adjust the filter fields as needed
+        task_items = task_items.filter(task_name__icontains=search_query) 
 
     context = {
         'tasks':task_items,
