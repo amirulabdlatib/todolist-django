@@ -6,6 +6,7 @@ from django.contrib.auth.forms import UserCreationForm
 from .models import Task
 from .forms import TaskForm
 from django.contrib.auth.decorators import login_required
+from django.db.models import Q
 
 # Create your views here.
 def render_login(request):
@@ -57,13 +58,17 @@ def dashboard(request):
 
     #querying pending task    
     task_pending = Task.objects.filter(task_user=request.user,task_status = False).count()
-        
+
+    # Get the search query from the request's GET parameters
+    search_query = request.GET.get('search_query')
+
+    if search_query:
+        task_items = task_items.filter(task_name__icontains=search_query)  # Adjust the filter fields as needed
 
     context = {
         'tasks':task_items,
         'form':form,
-        'id':id,
-        'task_pending':task_pending
+        'task_pending':task_pending,
     }
 
     

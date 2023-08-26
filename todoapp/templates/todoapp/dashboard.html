@@ -36,53 +36,59 @@
 {% endfor %}
 {% endif %}
 
+<div class="d-flex justify-content-between align-items-center">
+    <h1 class="mt-4">User: {{ user.username }}, {{ task_pending }} to be Completed</h1>
+    <a href="{% url 'todoapp:doLogout' %}" class="btn btn-danger">Logout</a>
+</div>
 
-    <div class="d-flex justify-content-between align-items-center">
-        <h1 class="mt-4">User: {{ user.username }}, {{task_pending}} to be Completed</h1>
-        <a href="{% url 'todoapp:doLogout' %}" class="btn btn-danger">Logout</a>
+<!-- Add the search form here -->
+<form method="GET" class="mt-4">
+    <div class="input-group mb-3">
+        <input type="text" class="form-control" placeholder="Search tasks" name="search_query">
+        <button type="submit" class="btn btn-primary">Search</button>
     </div>
+</form>
 
-    <form method="POST" class="mt-4">
-        {% csrf_token %}
-        {{ form }}
-        <button type="submit" class="btn btn-primary">Add Task</button>
-    </form>
+<form method="POST" class="mt-4">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit" class="btn btn-primary">Add Task</button>
+</form>
 
-    <table class="table mt-4">
-        <thead>
-            <tr>
-                <th>Task No</th>
-                <th>Task Name</th>
-                <th>Status</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            
-            {% for i in tasks %}
-            <tr>
-                <td>{{forloop.counter}}</td>
-                <td>{{ i.task_name }}</td>
-                <td>
-                    {% if i.task_status %}
-                    <span class="badge bg-success">Completed</span>
-                    {% else %}
-                    <span class="badge bg-warning text-dark">Pending</span>
-                    {% endif %}
-                </td>
-                <td>
-                    <a href="{% url 'todoapp:update' i.id %}" class="btn btn-info btn-sm">Update</a>
-                    <a href="{% url 'todoapp:delete_task' i.id %}" class="btn btn-danger btn-sm"  " onclick="return confirm('Are you sure to delete?');">Delete</a>
-                    {% if i.task_status %}
-                    <a href="{% url 'todoapp:undone' i.id %}" class="btn btn-secondary btn-sm">Mark as Pending</a>
-                    {% else %}
-                    <a href="{% url 'todoapp:done' i.id %}" class="btn btn-success btn-sm">Mark as Completed</a>
-                    {% endif %}
-                </td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<table class="table mt-4">
+    <thead>
+        <tr>
+            <th>Task No</th>
+            <th>Task Name</th>
+            <th>Status</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for i in tasks %}
+        <tr>
+            <td>{{ forloop.counter }}</td>
+            <td>{{ i.task_name }}</td>
+            <td>
+                {% if i.task_status %}
+                <span class="badge bg-success">Completed</span>
+                {% else %}
+                <span class="badge bg-warning text-dark">Pending</span>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{% url 'todoapp:update' i.id %}" class="btn btn-info btn-sm">Update</a>
+                <a href="{% url 'todoapp:delete_task' i.id %}" class="btn btn-danger btn-sm"  " onclick="return confirm('Are you sure to delete?');">Delete</a>
+                {% if i.task_status %}
+                <a href="{% url 'todoapp:undone' i.id %}" class="btn btn-secondary btn-sm">Mark as Pending</a>
+                {% else %}
+                <a href="{% url 'todoapp:done' i.id %}" class="btn btn-success btn-sm">Mark as Completed</a>
+                {% endif %}
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
 </div>
 
 {% endblock content %}
